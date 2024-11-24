@@ -1,5 +1,5 @@
 pygame==2.3.0
 Flask==2.3.2
-kivy==2.1.0
-cython==0.29.36  # Required for Kivy
+gunicorn==21.2.0
+
 
