@@ -4,66 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bounce Game</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <style>
         canvas {
-            display: block;
-            margin: auto;
-            border: 2px solid black;
-        }
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
+            border: 1px solid black;
         }
     </style>
 </head>
 <body>
     <h1>Bounce Game</h1>
-    <canvas id="gameCanvas" width="500" height="400"></canvas>
-    <py-script>
-        from js import document, window
+    <canvas id="gameCanvas" width="400" height="300"></canvas>
 
-        # Access the canvas
-        canvas = document.getElementById("gameCanvas")
-        ctx = canvas.getContext("2d")
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-        # Ball properties
-        ball_x = 250  # Initial x position
-        ball_y = 200  # Initial y position
-        ball_dx = 2   # Speed in x direction
-        ball_dy = 3   # Speed in y direction
-        ball_radius = 10
+        let ball = {
+            x: 50,
+            y: 50,
+            radius: 10,
+            dx: 2,
+            dy: 3,
+        };
 
-        # Animation loop
-        def update(*args):
-            global ball_x, ball_y, ball_dx, ball_dy
+        function drawBall() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.closePath();
 
-            # Clear the canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            // Move the ball
+            ball.x += ball.dx;
+            ball.y += ball.dy;
 
-            # Draw the ball
-            ctx.beginPath()
-            ctx.arc(ball_x, ball_y, ball_radius, 0, 2 * 3.14159)
-            ctx.fillStyle = "orange"
-            ctx.fill()
-            ctx.closePath()
+            // Bounce off walls
+            if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+                ball.dx *= -1;
+            }
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.dy *= -1;
+            }
+        }
 
-            # Update ball position
-            ball_x += ball_dx
-            ball_y += ball_dy
-
-            # Bounce the ball on canvas edges
-            if ball_x + ball_radius > canvas.width or ball_x - ball_radius < 0:
-                ball_dx = -ball_dx  # Reverse x direction
-            if ball_y + ball_radius > canvas.height or ball_y - ball_radius < 0:
-                ball_dy = -ball_dy  # Reverse y direction
-
-            # Request the next frame
-            window.requestAnimationFrame(update)
-
-        # Start the animation
-        window.requestAnimationFrame(update)
-    </py-script>
+        setInterval(drawBall, 20);
+    </script>
 </body>
 </html>
