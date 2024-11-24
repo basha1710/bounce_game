@@ -12,42 +12,40 @@
 </head>
 <body>
     <h1>Bounce Game</h1>
-    <canvas id="gameCanvas" width="400" height="300"></canvas>
-
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
     <script>
+        // Simple bounce game logic
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        let ball = {
-            x: 50,
-            y: 50,
-            radius: 10,
-            dx: 2,
-            dy: 3,
-        };
+        let ball = { x: 200, y: 200, vx: 2, vy: 3, radius: 10 };
 
-        function drawBall() {
+        function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the ball
             ctx.beginPath();
             ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
             ctx.fillStyle = "blue";
             ctx.fill();
             ctx.closePath();
 
-            // Move the ball
-            ball.x += ball.dx;
-            ball.y += ball.dy;
+            // Update ball position
+            ball.x += ball.vx;
+            ball.y += ball.vy;
 
             // Bounce off walls
             if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
-                ball.dx *= -1;
+                ball.vx *= -1;
             }
             if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
-                ball.dy *= -1;
+                ball.vy *= -1;
             }
+
+            requestAnimationFrame(draw);
         }
 
-        setInterval(drawBall, 20);
+        draw();
     </script>
 </body>
 </html>
