@@ -1,6 +1,4 @@
 pygame==2.3.0
 Flask==2.3.2
 kivy==2.1.0
-kivy-deps.angle==0.3.3  # Or adjust to another compatible version
-kivy-deps.sdl2==0.3.2
-kivy-deps.glew==0.3.1
+
