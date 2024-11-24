@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify, send_file
+import os
 
 app = Flask(__name__)
 
@@ -12,7 +13,8 @@ game_state = {
 @app.route("/")
 def index():
     """Serve the main game page."""
-    return render_template("index.html")
+    # Serve index.html from the current directory
+    return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
 
 @app.route("/game_state")
 def get_game_state():
