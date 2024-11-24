@@ -4,31 +4,56 @@
     <title>Bounce Game</title>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <h1>Bounce Game</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
     <py-script>
-    from ursina import *
+        from js import document, window
 
-    def update():
-        ball.y += ball.dy * time.dt
-        ball.x += ball.dx * time.dt
+        canvas = document.getElementById("gameCanvas")
+        ctx = canvas.getContext("2d")
 
-        # Bounce on collision with walls
-        if ball.y > 4 or ball.y < -4:
-            ball.dy *= -1
-        if ball.x > 7 or ball.x < -7:
-            ball.dx *= -1
+        # Ball properties
+        ball_x = 200
+        ball_y = 200
+        ball_dx = 2
+        ball_dy = 2
+        ball_radius = 10
 
-    # Initialize Ursina app
-    app = Ursina()
+        # Game loop
+        def update(*args):
+            global ball_x, ball_y, ball_dx, ball_dy
 
-    # Create Ball
-    ball = Entity(model='sphere', color=color.orange, scale=0.5)
-    ball.dy = 3
-    ball.dx = 3
+            # Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    app.run()
+            # Draw the ball
+            ctx.beginPath()
+            ctx.arc(ball_x, ball_y, ball_radius, 0, 2 * 3.14159)
+            ctx.fillStyle = "orange"
+            ctx.fill()
+            ctx.closePath()
+
+            # Update ball position
+            ball_x += ball_dx
+            ball_y += ball_dy
+
+            # Bounce on edges
+            if ball_x + ball_radius > canvas.width or ball_x - ball_radius < 0:
+                ball_dx = -ball_dx
+            if ball_y + ball_radius > canvas.height or ball_y - ball_radius < 0:
+                ball_dy = -ball_dy
+
+            window.requestAnimationFrame(update)
+
+        # Start the game loop
+        window.requestAnimationFrame(update)
     </py-script>
 </body>
 </html>
